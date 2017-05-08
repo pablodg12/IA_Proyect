@@ -1,3 +1,9 @@
+# tex compilation files
+
+*.aux
+*.log
+*.gz
+
 # Folder view configuration files
 .DS_Store
 Desktop.ini
