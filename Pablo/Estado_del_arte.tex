@@ -171,9 +171,18 @@ Se corrieron los experimentos 20 veces, el tiempo promedio obtenido por los algo
   \label{fig:DiagramaBarra5}
 \end{figure}
 
-La tabla indica en cada columa el porcentaje de soluciones que tuvieron un costo dentro de ese intervalo, es decir, en la columna nos dice que el 1.7$\%$ de los resultados obtenidos obtuvieron un costo de 0,1,2,3 o 4. Esta información es importante ya que nos permite comparar y observar que el segundo movimiento fue mucho mas efectivo que el primer movimiento.
+La tabla indica en cada columa el porcentaje de soluciones que tuvieron un costo dentro de ese intervalo a medida que  el algoritmo fue iterando, es decir, en la primera columna nos dice que el 1.7$\%$ de los resultados obtenidos reducieron su costo a 0,1,2,3 o 4. Esta información es importante ya que nos permite comparar y observar que el segundo movimiento tiende a mejorar mucho mas la solución que el primer movimiento. 
 
-\item 2 papers mas ? 
+\item En el año 2001, Erwin Kalvelagen, propuso un modelo basado en programación lineal mixta, este enfoque logro que la programación lineal pudiese resolver el problema de manera completa utilizando 7 periodos. El modelo se testeo en un software llamado GAMS[ref] (Software especializado en resolver modelos matematicos) sobre una maquina Cray C90. El modelo generado tuvo las siguientes caracteristicas.
+
+\begin{figure}[!h]
+  \centering
+    \includegraphics[width=0.6\textwidth]{5}
+  \label{fig:DiagramaBarra5}
+\end{figure}
+
+En la tabla anterior las filas corresponden ser a la cantidad de restricciones que tenemos, las columnas son la cantidad de variables, nz la cantidad de elementos que no son ceros, disc. vars corresponde a la cantidad de variables discretas, obj corresponde al optimo encontrado por la función objetivo, gen. time el tiempo que demora en generar el modelo y sol. time el tiempo que demora en encontrar una solución para el periodo t. Podemos observar de la tabla que la cantidad de variables y restricciones va aumentando a medida que pasan los periodos, en consecuencia el tiempo que demora en encontrar una solución tambien va en aumento.
+
 
 
 \end{itemize}
