@@ -3,6 +3,10 @@
 *.aux
 *.log
 *.gz
+*.aux
+*.bbl
+*.blg
+*.dvi
 
 # Folder view configuration files
 .DS_Store
