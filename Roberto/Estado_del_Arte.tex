@@ -12,7 +12,7 @@
 
 \begin{document}
 \title{Inteligencia Artificial \\ \begin{Large}Estado del Arte: Progressive Party Problem\end{Large}}
-\author{[Roberto Fuentes Zenteno]}
+\author{Roberto Fuentes Zenteno}
 \date{\today}
 \maketitle
 
@@ -243,12 +243,12 @@ Teniendo esto, se definen 2 principales tipos de meta-heurísticas: \textit{Metr
 
 \begin{itemize}
  \item \textbf{\textit{Metropolis algorithm}}: \\
- El algoritmo Metrópolis es una versión simplificada de \textit{Simulated Annealing} que utiliza un valor constante para su parámetro de temperatura. El algoritmo comienza con una configuración inicial en el espacio de búsqueda y luego realiza una serie de iteraciones. En cada iteración, se elige aleatoriamente un solo vecino (o equivalentemente un solo movimiento) de la configuración actual y luego se realiza un criterio probabilístico para decidir si este vecino es aceptado o no. El principio del algoritmo Metrópolis es aceptar cualquier movimiento que no aumente la función de coste, y aceptar, de manera controlada, movimientos de deterioro. Así se asegura de que el algoritmo no quede atrapado en un óptima local.
+ El algoritmo Metrópolis~\cite{Herman2010SimulatedA} es una versión simplificada de \textit{Simulated Annealing}~\cite{Herman2010SimulatedA} que utiliza un valor constante para su parámetro de temperatura. El algoritmo comienza con una configuración inicial en el espacio de búsqueda y luego realiza una serie de iteraciones. En cada iteración, se elige aleatoriamente un solo vecino (o equivalentemente un solo movimiento) de la configuración actual y luego se realiza un criterio probabilístico para decidir si este vecino es aceptado o no. El principio del algoritmo Metrópolis es aceptar cualquier movimiento que no aumente la función de coste, y aceptar, de manera controlada, movimientos de deterioro. Así se asegura de que el algoritmo no quede atrapado en un óptima local.
  
 El método tiene un parámetro $\theta$ llamado temperatura: cuanto más alto es el valor de la temperatura, se aceptan las degradaciones más fáciles (una temperatura cero corresponde a un descenso ya que todos los movimientos de deterioro son rechazados mientras que una temperatura infinita es realizar muchos cambios aleatorios en el espacio de búsqueda, ya que todos los movimientos son aceptados).
 
 \item \textbf{\textit{Tabu search}}: \\
-El algoritmo búsqueda de tabú comienza con una configuración inicial en el espacio de búsqueda y luego procede iterativamente a visitar una serie de configuraciones localmente mejores siguiendo el vecindario. En cada iteración, se aplica un mejor movimiento a la configuración actual , incluso si la solución no mejora la configuración actual en términos del valor de la función de coste. 
+El algoritmo búsqueda de tabú~\cite{Glover:1997:TS:549765} comienza con una configuración inicial en el espacio de búsqueda y luego procede iterativamente a visitar una serie de configuraciones localmente mejores siguiendo el vecindario. En cada iteración, se aplica un mejor movimiento a la configuración actual , incluso si la solución no mejora la configuración actual en términos del valor de la función de coste. 
 
 Este proceso iterativo puede sufrir ciclismo y quedar atrapado en un óptimo local. Para evitar este problema, TS introduce la noción de listas Tabú. Una lista tabú es una lista especial de corto plazo que mantiene un historial, compuesta de soluciones previamente encontradas. Una estrategia de TS simple basada en esta lista de corto plazo consiste en evitar que las soluciones guardadas sean reconsideradas para próximas $k$ iteraciones. \end{itemize}
 
@@ -293,6 +293,29 @@ Cada experimento se corrió 20 veces, demostrando claramente que las búsquedas 
 \end{table}
 
 Donde cada columna nos indica el porcentaje de las soluciones que tuvieron un costo dentro de los rangos correspondientes. Por ejemplo, en la primera segunda columna de la tabla, observamos que en el movimiento 2 el $1.7\%$ de los resultados obtenidos obtuvieron un costo entre 0 y 5, mientras que el movimiento dos obtuvo un $10.3\%$. Esto nos sirve para comparar ambos movimientos, concluyendo que el segundo movimiento fue mucho mejor y eficiente que que el primer movimiento.
+
+En el año 2001 se presenta el paper \textit{On solving the progressive party problem as a MIP} ~\cite{Kalvelagen20031713} donde se modela PPP como Programacion Entera Mixta (MIP). Este modelo pudo resolver hasta 7 periodos, siendo ejecutado en GAMS~\cite{Brook:1988:GUG:58859.58863} ( \textit{software} de alto nivel para el modelado de sistema para la optimización matemática. Está diseñado para modelar y resolver problemas lineales, no lineales y optimización entera mixta) sobre una maquina CrayC90. Los resultados se observan en la siguiente tabla:
+
+\begin{figure}[ht!]
+\centering
+ \includegraphics[width=1.0\textwidth]{party6.png}
+ \caption{Soluciones usando GAMS y MIP}
+\end{figure}
+
+\newpage
+Donde las columnas significan:
+\begin{itemize}
+    \item \textit{time stage}: periodo $t$ que ha logrado resolver el \textit{software}.
+    \item \textit{rows}: Cantidad de restricciones totales en el periodo $t$.
+    \item \textit{columns}: Cantidad de variables total al periodo $t$.
+    \item nz: Cantidad de elementos que no son 0 (\textit{non-zero}).
+    \item \textit{disc. var}: Cantidad de variables discretas.
+    \item \textit{obj}: Optimo encontrado por el programa (notar que siempre es siempre 13).
+    \item \textit{gen. time}: Tiempo que demora el \textit{software} en generar el modelo
+    \item \textit{sol. time}: Tiempo que se demora en encontrar la solucion optima para el periodo $t$.
+\end{itemize}
+
+Vemos que a medida que aumentan los periodos, las restricciones y variables en aumenta, llevando a que cueste mas llegar a la solución óptima del problema.
 
 Ya en el 2009, el paper \textit{Progress on the Progressive Party Problem} ~\cite{Simonis2009} nos entrega otro \textit{approach} de la solución usando \textit{finite domain constraints}, donde las variables tienen dominios finitos y se pueden eliminar
 valores de los dominios durante la ejecución del problema. Aqui se busca entontrar soluciones para distintos periodos de tiempos, yates anfitriones o yates invitados. El primer modelo planteado para las restricciones es el siguiente:
@@ -392,6 +415,12 @@ Alternativamente se propone un segundo modelo como CSP, el cual es un poco más 
     \end{itemize}
 \end{itemize}
 
+Su espacio de busqueda es mas reducido debido a que tiene solo 2 varibles,quedandonos de:
+
+\begin{align*}
+    EB = 2^{42\cdot39\cdot6} \cdot 2^{42\cdot42\cdot6}.
+\end{align*}    
+
 
 \section{Conclusiones}
 La planificación de tiempos es un amplio campo a optimizar y posee grande aplicaciones en la vida real, por lo que es clave poder desarrollar técnicas que permitan entregar una correcta gestión de estos elementos. A pesar de que el \textit{Progressive Party Problem} estudiado es una versión simplificada del problema que debe ser aplicado en la vida real, fue un
@@ -405,6 +434,8 @@ En el paper \textit{The progressive party problem: Integer linear programming an
 En el paper \textit{Solving Lineal Pseudo-Boolean Constraint Problems with Local Search}~\cite{Walser:1997:SLP:1867406.1867448} se resuelve el problema usando una búsqueda local para la búsqueda de soluciones, e introduciendo el algoritmo $\text{W}_{\text{SAT}}$($\mathcal{PB}$) , heurística que sobre problemas de tamaño realista es eficiente para encontrar buenas soluciones aproximadas trabajando con restricciones en el mundo de lo factible, introduciendo recursos para que el algoritmo funcione correctamente (como el movimiento, la creación de una solución inicial (\textit{Greedy}) o la lista Tabú). Probando este algoritmo sobre nuestro problema nos damos cuenta que los tiempos bajan de forma considerable en comparación a lo planteado en ~\cite{Smith1996}, además de que a pesar de ser una búsqueda local y no global, encuentra soluciones bastante eficientes. 
 
 Posteriormente en el paper \textit{Solving the Progressive Party Problem by Local Search}~\cite{Galinier1999}se nos presenta una tercera alternativa para poder resolver nuestro problema, presentando otro \textit{approach} de PPP basado en búsqueda local. Se resuelve el problema usando dos meta-heurísticas, las cuales son \textit{Metropolis algorithm} y \textit{Tabu Search algorithm}. Además, se definen dos movimientos los cuales son \textit{OneMove} y \textit{Swap}, además de una función de evaluacion en base a costos y \textit{penalty}'s (definidos como pesos) y a través de los experimentos se decide que movimiento es mejor. Claramente comparando estos métodos con los otros modelos estudiados podemos apreciar la alta reducción de tiempo que presentan las búsquedas locales frente a los otros métodos descritos en ~\cite{Smith1996}, por lo que las búsquedas locales son ideales para resolver estos problemas.
+
+Luego en el paper \textit{On solving the progressive party problem as a MIP}~\cite{Kalvelagen20031713} observamos que formulando nuestro problema con otras técnicas y probándolo en maquinas mas potentes (debido a que han pasado algunos años y la tecnología va avanzando), entrega resultados bastantes buenos en poco tiempo, y llegando efectivamente a un óptimo. Aquí queda demostrado que con el pasar de los años ciertas técnicas que antes no convergían podrán hacerlo debido al rápido de la ciencia.
 
 Finalmente en el paper \textit{Progress on the Progressive Party Problem} ~\cite{Simonis2009} se nos entrega otro \textit{approach} de la solución usando \textit{finite domain constraints}, donde las variables tienen dominios finitos y se pueden eliminar valores de los dominios durante la ejecución del problema. Haciendo distintos cambios a las restricciones  y aplicando nuevos elementos (como \textit{credit search}, aleatoriedad, descomponer el problema en periodos, etc) nos damos cuenta de que se puede seguir optimizando el modelo, logrando así una solución más rápida al problema.
 
