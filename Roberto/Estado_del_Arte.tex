@@ -43,10 +43,8 @@ University}). Consiste en organizar de la mejor manera una ``fiesta progresiva''
 
 \section{Introducción}
 Una conferencia es una manera excelente en que las personas que tienen intereses comunes pueden reunirse e intercambiar las ideas m\'as vanguardistas de su campo. Es por esto que la gestión de eventos progresivos es un elemento importante a controlar y mejorar. En este documento, se presenta el \textit{Progressive Party Problem} (PPP), problema especifico que plante\'o Peter Hubbard, miembro de la asociación \textit{Sea Wych Owners} y del departamento de matematicas de \textit{Southampton University} en el a\~no 1996~\cite{Kalvelagen20031713}, cuyo objetivo es asignar todas las tripulaciones visitantes a los yates anfitriones para cada período de tiempo, minimizando la cantidad de yates anfitriones. El documento proporciona el planteamiento del problema bien definido junto con su formulación a través de Programación entera y Programación de restricciones junto a una explicación de como fueron los resultados de ambos experimentos. Además, existen otros documentos donde se entrega la data del problema y sus respectivas soluciones usando distintas técnicas, junto a los tiempos que demoraron y las máquinas donde se testearon.
-\\
 
 \textit{Progressive Party Problem} (PPP) busca encontrar la mejor manera de gestionar yates invitados y anfitriones, donde los yates invitados podrán invitar a los anfitriones en determinados periodos de tiempo. Su objetivo es minimizar los yates anfitriones respetando ciertas restricciones, como evitar exceder la cantidad de los yates anfitriones o que las tripulaciones invitadas no podrán toparse más de una vez.
-\\
 
 La motivación del problema surge debido al problema originado en \textit{Bembridge}, Isla de \textit{Wight}~\cite{Kalvelagen20031713}. Su contexto es organizar un programa social para un paseo de yates, donde estos estaban amarrados en un puerto deportivo. Para que las personas se reúnan con tantos otros asistentes como les fuera posible, se planeó una fiesta nocturna en donde algunos de estos yates serian designados como anfitriones, y las tripulaciones de los barcos restantes irían visitando a estos yates anfitriones durante seis horas en periodos de media hora. El problema que enfrentaba el organizador del paseo era el de minimizar el número de los barcos anfitriones, ya que cada anfitrión tenía que ser abastecido con alimentos y otros prerrequisitos. 
 
@@ -150,8 +148,8 @@ Se realizan experimentos con un problema e instancias reducidas, y el calculo de
 
 \item \textbf{Enfoque con programación de restricciones}
 \begin{itemize}
-\item A pesar de que ILP falló en encontrar la solución, la idea de usar programación de restricciones aparece, haciendo un pequeño arreglo manual. Este trabajo fue llevado a cabo en la Universidad de \textit{Leeds}~\cite{Smith1996}. \textit{Progressive Party Problem} con 13 yates anfitriones es formulado entonces como un CSP, utilizando una técnica de búsqueda de soluciones de tipo \textit{backtracking} con \textit{full lookahead} (Estas tecnicas estan contenidas en una libreria de C++ llamada ILOG Solver).
-La formulación como CSP de nuestro problema resulta ser mucho mas compacta, y se define que seran 13 los barcos anfitriones, ya que esta fue la cota inferior que se encontró previamente. Realizando esta formulación nos damos cuenta además que el numero de restricciones y de variables baja a $O(B^2T)$. El problema se testeó primero en problemas mas reducidos, arrojando rápidas respuestas (1 ó 2 segundos en una máquina \textit{IPX SPARCstation}) y el programa mostró estar arrojando soluciones correctas.
+\item A pesar de que ILP falló en encontrar la solución, la idea de usar programación de restricciones aparece, haciendo un pequeño arreglo manual. Este trabajo fue llevado a cabo en la Universidad de \textit{Leeds}~\cite{Smith1996}. \textit{Progressive Party Problem} con 13 yates anfitriones es formulado entonces como un CSP, utilizando una técnica de búsqueda de soluciones de tipo \textit{backtracking} con \textit{full lookahead} (Estas técnicas están contenidas en una librería de C++ llamada ILOG Solver).
+La formulación como CSP de nuestro problema resulta ser mucho mas compacta, y se define que serán 13 los barcos anfitriones, ya que esta fue la cota inferior que se encontró previamente. Realizando esta formulación nos damos cuenta además que el numero de restricciones y de variables baja a $O(B^2T)$. El problema se testeó primero en problemas mas reducidos, arrojando rápidas respuestas (1 ó 2 segundos en una máquina \textit{IPX SPARCstation}) y el programa mostró estar arrojando soluciones correctas.
 
 Sin embargo, el problema completo aun  tarda horas en resolverse, por lo que se decidió entonces asignar todas las variables relativas a un período de tiempo antes de pasar al siguiente. Por lo tanto, cada período de tiempo se resolvió por separado, pero las soluciones para cada período de tiempo limitan las soluciones futuras. En este sentido, esta era otra variable que ordenaba la heurística, teniendo prioridad sobre las demás. Sin embargo, el programa no pudo retroceder a períodos de tiempo anteriores. El plan era encontrar una solución para los períodos de tiempo que se pudieran resolver dentro de un periodo corto, y luego imprimir los dominios de las variables restantes. Se esperaba que esto diera alguna pista de por qué el programa podría no proceder. Con esta modificación, el programa encontró una solución para períodos de tiempo muy rápidamente (que no había sido capaz de hacer anteriormente).
 
@@ -229,14 +227,14 @@ las cuales son similares al modelo CSP de ~\cite{Smith1996}.
 Como se ha expuesto anteriormente, una configuración es una asignación completa de los números en $D = {1,\ldots ,H = 13}$ a las variables de $X = {x_{gt}, 1 \leq g \leq G, 1 \leq t \leq T}$. 
  La configuración es una tabla $G \times T (G = 29 \text{ y } T = 6,7,8,9 \text{ o }10)$ cuyos elementos son números enteros de $\{1\ldots 13\}$. El espacio de búsqueda es el conjunto de todas estas asignaciones. Además, se plantea una función de costos, la cual se define como el número de restricciones violadas, asociando a cada restricción $C$ una penalidad $f_C (s)$ que toma 1 o 0 según que la restricción sea violada o no. De hecho, esta función no puede distinguir una restricción "fuertemente violada" de una "débilmente" violada. En el PPP, las restricciones son más complejas, por lo que se proponen una función de \textit{penalty} para las restricciones ~\cite{Galinier1999}. Luego, la función de costo (evaluación) nos queda como la suma de la multiplicación entre unos pesos $p$ (varían dependiendo de cada función) y las funciones de \textit{penalty} $f_{C}$. 
 
-Cabe destacar que a diferencia de los demas modelos que trabajaban en el mundo de lo factible, estos algoritmos trabajan en el mundo \textbf{de lo infactible}.
+Cabe destacar que a diferencia de los demás modelos que trabajaban en el mundo de lo factible, estos algoritmos trabajan en el mundo \textbf{de lo infactible}.
 Definimos entonces dos tipos de movimientos:
 \begin{itemize}
     \item \textit{OneMove}: \\
     Un movimiento del tipo OneMove consiste simplemente en cambiar un barco anfitrión a una tripulación dada por un período dado.
     
     \item \textit{Swap}: \\
-    Un movimiento \textit{swap} consiste en invertir los barcos anfitriones asignados a dos tripulacion $g_1$ y $g_2$ durante el mismo periodo de tiempo $t$. 
+    Un movimiento \textit{swap} consiste en invertir los barcos anfitriones asignados a dos tripulación $g_1$ y $g_2$ durante el mismo periodo de tiempo $t$. 
 \end{itemize}
 
 Teniendo esto, se definen 2 principales tipos de meta-heurísticas: \textit{Metropolis algorithm} y \textit{Tabu Search algorithm}. 
@@ -294,7 +292,7 @@ Cada experimento se corrió 20 veces, demostrando claramente que las búsquedas 
 
 Donde cada columna nos indica el porcentaje de las soluciones que tuvieron un costo dentro de los rangos correspondientes. Por ejemplo, en la primera segunda columna de la tabla, observamos que en el movimiento 2 el $1.7\%$ de los resultados obtenidos obtuvieron un costo entre 0 y 5, mientras que el movimiento dos obtuvo un $10.3\%$. Esto nos sirve para comparar ambos movimientos, concluyendo que el segundo movimiento fue mucho mejor y eficiente que que el primer movimiento.
 
-En el año 2001 se presenta el paper \textit{On solving the progressive party problem as a MIP} ~\cite{Kalvelagen20031713} donde se modela PPP como Programacion Entera Mixta (MIP). Este modelo pudo resolver hasta 7 periodos, siendo ejecutado en GAMS~\cite{Brook:1988:GUG:58859.58863} ( \textit{software} de alto nivel para el modelado de sistema para la optimización matemática. Está diseñado para modelar y resolver problemas lineales, no lineales y optimización entera mixta) sobre una maquina CrayC90. Los resultados se observan en la siguiente tabla:
+En el año 2001 se presenta el paper \textit{On solving the progressive party problem as a MIP} ~\cite{Kalvelagen20031713} donde se modela PPP como Programación Entera Mixta (MIP). Este modelo pudo resolver hasta 7 periodos, siendo ejecutado en GAMS~\cite{Brook:1988:GUG:58859.58863} ( \textit{software} de alto nivel para el modelado de sistema para la optimización matemática. Está diseñado para modelar y resolver problemas lineales, no lineales y optimización entera mixta) sobre una maquina CrayC90. Los resultados se observan en la siguiente tabla:
 
 \begin{figure}[ht!]
 \centering
@@ -310,15 +308,15 @@ Donde las columnas significan:
     \item \textit{columns}: Cantidad de variables total al periodo $t$.
     \item nz: Cantidad de elementos que no son 0 (\textit{non-zero}).
     \item \textit{disc. var}: Cantidad de variables discretas.
-    \item \textit{obj}: Optimo encontrado por el programa (notar que siempre es siempre 13).
+    \item \textit{obj}: Óptimo encontrado por el programa (notar que siempre es siempre 13).
     \item \textit{gen. time}: Tiempo que demora el \textit{software} en generar el modelo
-    \item \textit{sol. time}: Tiempo que se demora en encontrar la solucion optima para el periodo $t$.
+    \item \textit{sol. time}: Tiempo que se demora en encontrar la solución óptima para el periodo $t$.
 \end{itemize}
 
 Vemos que a medida que aumentan los periodos, las restricciones y variables en aumenta, llevando a que cueste mas llegar a la solución óptima del problema.
 
 Ya en el 2009, el paper \textit{Progress on the Progressive Party Problem} ~\cite{Simonis2009} nos entrega otro \textit{approach} de la solución usando \textit{finite domain constraints}, donde las variables tienen dominios finitos y se pueden eliminar
-valores de los dominios durante la ejecución del problema. Aqui se busca entontrar soluciones para distintos periodos de tiempos, yates anfitriones o yates invitados. El primer modelo planteado para las restricciones es el siguiente:
+valores de los dominios durante la ejecución del problema. Aquí se busca encontrar soluciones para distintos periodos de tiempos, yates anfitriones o yates invitados. El primer modelo planteado para las restricciones es el siguiente:
 
 \begin{itemize}
     \item \textit{alldifferent}: Este tipo de restricciones nos señala que se instancian valores diferentes para un conjunto de variables. Se aplica a la restricción de que una tripulación invitada no podrá visitar un yate anfitrión más de una vez.
@@ -328,10 +326,6 @@ valores de los dominios durante la ejecución del problema. Aqui se busca entont
 Sin embargo, hubieron problemas con este modelo, puesto que no existía mucha propagación de restricciones y no había mucha interacción entre los diferentes periodos de tiempo. Por esto, se planteo un segundo modelo donde se descompone el problema por periodos, y resolviendo cada periodo por separado. Así, al resolver la primera instancia, se agregarían restricciones en base a las asignaciones para el segundo periodo, realizando esto para los siguientes $k$ periodos En el segundo modelo se consideran las siguientes variantes: se propone que la próxima variable a asignar debe ser la que es más probable que falle (\textit{first\_fail}), puesto que el mayor costo del algoritmo era realizar un \textit{backtracking} demasiado profundo. Por cada periodo además, se usó una estrategia de búsqueda parcial, la cual limita el numero de \textit{backtraking}, reduciendo el costo de buscar por todo el árbol (búsqueda conocida como \textit{credit search}). Finalmente se agrega aleatoriedad al momento de asignar valores para que haya un desorden en la elección de valores, para no quedar atrapados en una rama del árbol y poder así explorar otras soluciones.
 
 Realizando estos cambios, se noto una mejora ejecución y no se perdió propagación.
-
-
-
-
 
 \section{Modelo Matemático}
 Se presenta la primera formulación del problema \textit{Progressive Party Problem }, descrito de la siguiente manera:
@@ -366,15 +360,15 @@ Se presenta la primera formulación del problema \textit{Progressive Party Probl
         \item (5) y (6): Como el barco anfitrión i es irrelevante, la siguiente formulación es más apropiada que en ~\cite{Walser:1997:SLP:1867406.1867448}. Se define la variable binarias $m_{klt}$ en lugar de $y_{iklt}$ que toma el valor 1 si las tripulaciones k y l se reúnen en el instante t. Si no se reúnen entonces, dejamos $m_{klt}$ sin restricciones.
     \end{itemize}
 \end{itemize}
-Nuestro espacio de busqueda nos quedaria de la siguiente forma:
+Nuestro espacio de búsqueda nos quedaría de la siguiente forma:
 \begin{itemize}
-    \item $h_i$: todo su espacio seria de $2^{13}$, puesto que son 13 barcos anfitriones, y cada uni puede tomar el valor de 0 o 1.
+    \item $h_i$: todo su espacio seria de $2^{39}$, puesto que son 39 barcos los posibles  anfitriones, y cada uno puede tomar el valor de 0 o 1.
     \item $x_{ikt}$: todo el espacio a abarcar por esta variable es de $2^{42\cdot39\cdot}$, puesto que son 42 yates, 39 tripulaciones (las tripulaciones virtuales se setean como 0, por lo que no cuentan) y los periodos son 6 (3 horas).
     \item $m_{klt}$: todos los valores posibles que puede tomar esta variable son $2^{42\cdot42\cdot6}$, puesto que las tripulaciones \textit{host} si cuentan, aunque no se mueven de sus barcos. Siendo asi, 42 son las tripulaciones y 6 los periodos.
 \end{itemize}
-Teniendo esto, el espacio de busqueda queda definido como:
+Teniendo esto, el espacio de búsqueda queda definido como:
 \begin{align*}
-    EB = 2^{13} \cdot 2^{42\cdot39\cdot6} \cdot 2^{42\cdot42\cdot6}
+    EB = 2^{39} \cdot 2^{42\cdot39\cdot6} \cdot 2^{42\cdot42\cdot6}
 \end{align*}
 
 Alternativamente se propone un segundo modelo como CSP, el cual es un poco más compacto. Supongamos que tenemos $G$ barcos invitados, $H$ yates \textit{host} y $T$ periodos:
@@ -415,7 +409,7 @@ Alternativamente se propone un segundo modelo como CSP, el cual es un poco más 
     \end{itemize}
 \end{itemize}
 
-Su espacio de busqueda es mas reducido debido a que tiene solo 2 varibles,quedandonos de:
+Su espacio de búsqueda es mas reducido debido a que tiene solo 2 variables,quedándonos de:
 
 \begin{align*}
     EB = 2^{42\cdot39\cdot6} \cdot 2^{42\cdot42\cdot6}.
@@ -427,7 +421,7 @@ La planificación de tiempos es un amplio campo a optimizar y posee grande aplic
 problema de vital importancia en el desarrollo del área pues permitió sentar las bases de los avances que se han logrado en los problemas derivados. El problema puede ser atacado con algoritmos que tienen distintos enfoques y trabajan
 de maneras completamente distinta, pero no aseguran que el problema pueda resolverse de forma rápida y eficiente.
 
-Por otra parte se analizaron ciertas variantes del problema, las cuales ayudaron de manera significativa al desarrollo y mejora de los algoritmos posteriormente presentados, tales como la cantidad de yates anfitriones y yates invitados, instancia usada en varios planteamentos posteriores.
+Por otra parte se analizaron ciertas variantes del problema, las cuales ayudaron de manera significativa al desarrollo y mejora de los algoritmos posteriormente presentados, tales como la cantidad de yates anfitriones y yates invitados, instancia usada en varios planteamientos posteriores.
 
 En el paper \textit{The progressive party problem: Integer linear programming and constraint programming compared} ~\cite{Smith1996} se analizaron dos modelos para el análisis y resolución del PPP: Programación Lineal Entera y Programación de restricciones. Sin embargo, para el primer caso fue imposible resolver el modelo real en su totalidad (incluso relajando el problema), y para el caso de CSP fue necesaria una relajación del problema para poder abordarlo y poder entregar una solución en un tiempo prudente. A pesar de ser razonable en cierta parte la gran demora de tiempo que estos algoritmos presentan, debido a las limitaciones computacionales de ese año, se ha podido trabajar y mejorar el modelo de PPP, entregando resultados sorprendentes en comparación a estos dos modelos.
 
